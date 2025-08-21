@@ -14,6 +14,68 @@ class SystemSettingSeeder extends Seeder
     {
         $settings = [
             // MLM System Settings
+            // System Settings
+            [
+                'key' => 'maintenance_mode',
+                'value' => 'false',
+                'type' => 'boolean',
+                'group' => 'system',
+                'display_name' => 'Maintenance Mode',
+                'description' => 'Enable maintenance mode to restrict user access',
+                'is_editable' => true,
+                'is_public' => false,
+                'options' => json_encode(['true' => 'Enabled', 'false' => 'Disabled']),
+                'validation_rules' => 'required|boolean',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+                      // Security Settings
+                      [
+                        'key' => 'session_timeout',
+                        'value' => '120',
+                        'type' => 'integer',
+                        'group' => 'security',
+                        'display_name' => 'Session Timeout (Minutes)',
+                        'description' => 'Number of minutes before user session expires due to inactivity',
+                        'is_editable' => true,
+                        'is_public' => false,
+                        'options' => json_encode(['min' => 15, 'max' => 480, 'step' => 15]),
+                        'validation_rules' => 'required|integer|min:15|max:480',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+                    [
+                        'key' => 'max_login_attempts',
+                        'value' => '5',
+                        'type' => 'integer',
+                        'group' => 'security',
+                        'display_name' => 'Maximum Login Attempts',
+                        'description' => 'Maximum failed login attempts before account lockout',
+                        'is_editable' => true,
+                        'is_public' => false,
+                        'options' => json_encode(['min' => 3, 'max' => 10, 'step' => 1]),
+                        'validation_rules' => 'required|integer|min:3|max:10',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+
+
+                    [
+                        'key' => 'registration_enabled',
+                        'value' => 'true',
+                        'type' => 'boolean',
+                        'group' => 'system',
+                        'display_name' => 'User Registration',
+                        'description' => 'Allow new users to register accounts',
+                        'is_editable' => true,
+                        'is_public' => false,
+                        'options' => json_encode(['true' => 'Enabled', 'false' => 'Disabled']),
+                        'validation_rules' => 'required|boolean',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+
             [
                 'key' => 'sponsor_commission_rate',
                 'value' => '40',
@@ -146,35 +208,7 @@ class SystemSettingSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-            // System Settings
-            [
-                'key' => 'maintenance_mode',
-                'value' => 'false',
-                'type' => 'boolean',
-                'group' => 'system',
-                'display_name' => 'Maintenance Mode',
-                'description' => 'Enable maintenance mode to restrict user access',
-                'is_editable' => true,
-                'is_public' => false,
-                'options' => json_encode(['true' => 'Enabled', 'false' => 'Disabled']),
-                'validation_rules' => 'required|boolean',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'registration_enabled',
-                'value' => 'true',
-                'type' => 'boolean',
-                'group' => 'system',
-                'display_name' => 'User Registration',
-                'description' => 'Allow new users to register accounts',
-                'is_editable' => true,
-                'is_public' => false,
-                'options' => json_encode(['true' => 'Enabled', 'false' => 'Disabled']),
-                'validation_rules' => 'required|boolean',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+    
             [
                 'key' => 'max_sub_accounts_per_user',
                 'value' => '5',
@@ -193,35 +227,7 @@ class SystemSettingSeeder extends Seeder
             
             
 
-            // Security Settings
-            [
-                'key' => 'session_timeout',
-                'value' => '120',
-                'type' => 'integer',
-                'group' => 'security',
-                'display_name' => 'Session Timeout (Minutes)',
-                'description' => 'Number of minutes before user session expires due to inactivity',
-                'is_editable' => true,
-                'is_public' => false,
-                'options' => json_encode(['min' => 15, 'max' => 480, 'step' => 15]),
-                'validation_rules' => 'required|integer|min:15|max:480',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'max_login_attempts',
-                'value' => '5',
-                'type' => 'integer',
-                'group' => 'security',
-                'display_name' => 'Maximum Login Attempts',
-                'description' => 'Maximum failed login attempts before account lockout',
-                'is_editable' => true,
-                'is_public' => false,
-                'options' => json_encode(['min' => 3, 'max' => 10, 'step' => 1]),
-                'validation_rules' => 'required|integer|min:3|max:10',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+  
         ];
 
         DB::table('system_settings')->insert($settings);
