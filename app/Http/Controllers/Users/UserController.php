@@ -17,17 +17,19 @@ class UserController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+        $currentAccount = $user->getCurrentSubAccount();
+        
         $stats = [
-            'total_balance' => $user->subAccount?->total_balance ?? 0,
-            'direct_referrals' => $user->referrals()->count(),
-            'total_commissions' => $user->commissions()->sum('amount'),
-            'auto_income' => $user->autoBoardIncome()->sum('amount'),
+            'total_balance' => $currentAccount?->total_balance ?? 0,
+            'direct_referrals' => $currentAccount?->direct_referral_count ?? 0,
+            'total_commissions' => ($currentAccount?->total_sponsor_commission ?? 0) + ($currentAccount?->total_generation_commission ?? 0),
+            'auto_income' => $currentAccount?->total_auto_income ?? 0,
         ];
 
         $recentTransactions = $user->transactions()->latest()->take(5)->get();
         $autoBoardStats = $user->autoBoardStatus();
 
-        return view('users.dashboard.index', compact('user', 'stats', 'recentTransactions', 'autoBoardStats'));
+        return view('users.dashboard.index', compact('user', 'currentAccount', 'stats', 'recentTransactions', 'autoBoardStats'));
     }
 
     /**

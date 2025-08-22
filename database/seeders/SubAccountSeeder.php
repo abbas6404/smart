@@ -31,6 +31,7 @@ class SubAccountSeeder extends Seeder
             'active_package_purcased_at' => now(),
             'referral_by_id' => null, // Root account
             'direct_referral_count' => 0,
+            'purchase_referral_count' => 0,
             'generation_count' => 0,
             'total_balance' => 0.00,
             'withdrawal_limit' => 500.00,
@@ -41,6 +42,7 @@ class SubAccountSeeder extends Seeder
             'total_generation_commission' => 0.00,
             'total_auto_income' => 0.00,
             'status' => 'active',
+            'is_primary' => true, // Set as primary account
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -70,7 +72,8 @@ class SubAccountSeeder extends Seeder
                     'active_package_id' => $packageIds[($totalAccounts - 1) % count($packageIds)], // Cycle through packages
                     'active_package_purcased_at' => now(),
                     'referral_by_id' => $sponsorId,
-                    'direct_referral_count' => 0,
+                    'direct_referral_count' => 0,   
+                    'purchase_referral_count' => 0,
                     'generation_count' => 0,
                     'total_balance' => 0.00,
                     'withdrawal_limit' => 500.00,

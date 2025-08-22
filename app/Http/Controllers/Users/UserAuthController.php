@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\SubAccount;
+use App\Helpers\AccountNumberHelper;
 use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
@@ -34,13 +35,34 @@ class UserAuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required|string', // Can be email or phone
             'password' => 'required|string',
-            'remember' => 'sometimes|boolean',
+            'remember' => 'nullable', // Simplified validation
         ]);
 
-        $credentials = $request->only('email', 'password');
-        $remember = $request->boolean('remember');
+        $login = $request->input('login');
+        $password = $request->input('password');
+        
+        // Handle remember checkbox properly
+        $remember = $request->has('remember') && $request->input('remember') == '1';
+
+        // Determine if login is email or phone
+        $isEmail = filter_var($login, FILTER_VALIDATE_EMAIL);
+        
+        if ($isEmail) {
+            // Check if user exists with this email
+            $user = User::where('email', $login)->first();
+            if (!$user) {
+                throw ValidationException::withMessages([
+                    'login' => ['No account found with this email address.'],
+                ]);
+            }
+            // Login with email
+            $credentials = ['email' => $login, 'password' => $password];
+        } else {
+            // Login with phone
+            $credentials = ['phone' => $login, 'password' => $password];
+        }
 
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
@@ -54,7 +76,7 @@ class UserAuthController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
+            'login' => ['The provided credentials are incorrect.'],
         ]);
     }
 
@@ -66,35 +88,61 @@ class UserAuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'nullable|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'referral_code' => 'nullable|string|exists:sub_accounts,referral_code',
+            'referral_code' => 'nullable|string',
         ]);
 
         // Create user
         $user = User::create([
             'name' => $request->name,
             'phone' => $request->phone,
-            'email' => $request->email,
+            'email' => $request->email ?: null, // Handle empty email as null
             'password' => Hash::make($request->password),
         ]);
 
         // Create sub account with referral code
-        $referralCode = $this->generateReferralCode();
-        $user->subAccount()->create([
-            'name' => $user->name,
-            'account_number' => $this->generateAccountNumber(),
-            'referral_code' => $referralCode,
-        ]);
+        try {
+            $referralCode = AccountNumberHelper::generateReferralCode();
+            $user->subAccounts()->create([
+                'name' => $user->name,
+                'user_id' => $user->id, // Ensure user_id is set
+                'account_number' => AccountNumberHelper::generateAccountNumber(),
+                'referral_code' => $referralCode,
+                'is_primary' => true, // Set as primary account
+            ]);
+        } catch (\Exception $e) {
+            // If sub account creation fails, delete the user and show error
+            $user->delete();
+            throw ValidationException::withMessages([
+                'general' => ['Failed to create account. Please try again.'],
+            ]);
+        }
 
-        // Set sponsor if referral code provided
+        // Set sponsor if referral code or account number provided
         if ($request->referral_code) {
-            $sponsor = SubAccount::where('referral_code', $request->referral_code)->first();
-            if ($sponsor) {
-                $user->subAccount->update(['referral_by_id' => $sponsor->id]);
+            try {
+                // Try to find sponsor by referral code first
+                $sponsor = SubAccount::where('referral_code', $request->referral_code)->first();
                 
-                // Update sponsor's direct referral count
-                $sponsor->increment('direct_referral_count');
+                // If not found by referral code, try by account number
+                if (!$sponsor) {
+                    $sponsor = SubAccount::where('account_number', $request->referral_code)->first();
+                }
+                
+                if ($sponsor) {
+                    $user->subAccount->update(['referral_by_id' => $sponsor->id]);
+                    
+                    // Update sponsor's direct referral count
+                    $sponsor->increment('direct_referral_count');
+                }
+            } catch (\Exception $e) {
+                // Log the error but don't fail registration
+                \Log::warning('Failed to set sponsor relationship', [
+                    'user_id' => $user->id,
+                    'referral_input' => $request->referral_code,
+                    'error' => $e->getMessage()
+                ]);
             }
         }
 
@@ -120,27 +168,5 @@ class UserAuthController extends Controller
         return redirect()->route('user.login');
     }
 
-    /**
-     * Generate unique referral code
-     */
-    private function generateReferralCode(): string
-    {
-        do {
-            $code = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
-        } while (SubAccount::where('referral_code', $code)->exists());
 
-        return $code;
-    }
-
-    /**
-     * Generate unique account number
-     */
-    private function generateAccountNumber(): string
-    {
-        do {
-            $number = 'ACC' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
-        } while (SubAccount::where('account_number', $number)->exists());
-
-        return $number;
-    }
 }

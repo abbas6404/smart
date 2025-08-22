@@ -18,7 +18,7 @@ class AutoBoardDistributionSeeder extends Seeder
             ->first();
         
         $subAccounts = DB::table('sub_accounts')
-            ->where('direct_referral_count', '>=', 30) // Only accounts eligible for auto income
+            ->where('purchase_referral_count', '>=', 30) // Only accounts eligible for auto income
             ->get();
 
         if (!$todaysBoard || $subAccounts->isEmpty()) {
@@ -37,8 +37,8 @@ class AutoBoardDistributionSeeder extends Seeder
                         'auto_board_id' => $todaysBoard->id,
                         'sub_account_id' => $subAccount->id,
                         'amount' => $amount,
-                        'direct_referral_count' => 30 + ($index * 5), // Simulated referral count
-                        'notes' => "Daily auto income distribution - {$amount} Taka for having 30+ direct referrals",
+                        'purchase_referral_count' => 30 + ($index * 5), // Simulated referral count
+                        'notes' => "Daily auto income distribution - {$amount} Taka for having 30+ purchase referrals",
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
@@ -78,15 +78,15 @@ class AutoBoardDistributionSeeder extends Seeder
         foreach ($subAccounts as $subAccount) {
             // Calculate distribution amount based on referral count
             $baseAmount = 100; // Base 100 Taka
-            $bonusAmount = ($subAccount->direct_referral_count - 30) * 2; // 2 Taka per extra referral
+            $bonusAmount = ($subAccount->purchase_referral_count - 30) * 2; // 2 Taka per extra referral
             $amount = $baseAmount + $bonusAmount;
             
             $distributions[] = [
                 'auto_board_id' => $todaysBoard->id,
                 'sub_account_id' => $subAccount->id,
                 'amount' => $amount,
-                'direct_referral_count' => $subAccount->direct_referral_count,
-                'notes' => "Daily auto income - {$amount} Taka for {$subAccount->direct_referral_count} direct referrals",
+                'purchase_referral_count' => $subAccount->purchase_referral_count,
+                'notes' => "Daily auto income - {$amount} Taka for {$subAccount->purchase_referral_count} purchase referrals",
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

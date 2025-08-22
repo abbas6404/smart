@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('auto_boards', function (Blueprint $table) {
             $table->id();
             // total information
-            $table->decimal('total_collotion_amount', 10, 2)->default(0); // total collotion amount
+            $table->decimal('total_collection_amount', 10, 2)->default(0); // total collection amount
             $table->integer('total_contributors')->default(0); // total contributors account
             $table->integer('total_distributed')->default(0); // total distributed account 
             // today information
-            $table->decimal('today_collotion_amount', 10, 2)->default(0); // today collotion amount
+            $table->decimal('today_collection_amount', 10, 2)->default(0); // today collection amount
             $table->integer('today_contributors')->default(0); // today contributors account
             $table->integer('today_distributed')->default(0); // today distributed in total amount  
             $table->integer('today_per_account_distributed')->default(0); // per account get today distributed amount       
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->date('distributed_date')->nullable(); 
 
             // system information
-            $table->enum('status', ['collotion', 'distributed'])->default('collotion'); // status of the auto board 
+            $table->enum('status', ['collection', 'distributed'])->default('collection'); // status of the auto board 
             $table->text('distribution_log')->nullable(); // log of the distribution process
             $table->timestamps();
 

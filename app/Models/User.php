@@ -58,11 +58,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's sub account (MLM account)
+     * Get the user's sub accounts (MLM accounts)
+     */
+    public function subAccounts(): HasMany
+    {
+        return $this->hasMany(SubAccount::class);
+    }
+
+    /**
+     * Get the user's primary sub account (MLM account)
      */
     public function subAccount(): HasOne
     {
-        return $this->hasOne(SubAccount::class);
+        return $this->hasOne(SubAccount::class)->where('is_primary', true);
     }
 
     /**
@@ -248,5 +256,56 @@ class User extends Authenticatable
         // This would return notifications from a notifications table
         // For now, return an empty query builder
         return \Illuminate\Notifications\DatabaseNotification::whereRaw('1 = 0');
+    }
+
+    /**
+     * Get current active sub account
+     */
+    public function getCurrentSubAccount()
+    {
+        return session('current_sub_account_id') 
+            ? $this->subAccounts()->find(session('current_sub_account_id'))
+            : $this->subAccount;
+    }
+
+    /**
+     * Switch to a different sub account
+     */
+    public function switchToSubAccount($subAccountId)
+    {
+        $subAccount = $this->subAccounts()->find($subAccountId);
+        if ($subAccount) {
+            session(['current_sub_account_id' => $subAccountId]);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Create a new sub account
+     */
+    public function createNewSubAccount($name = null)
+    {
+        $name = $name ?: $this->name . ' Account ' . ($this->subAccounts()->count() + 1);
+        
+        return $this->subAccounts()->create([
+            'name' => $name,
+            'account_number' => \App\Helpers\AccountNumberHelper::generateAccountNumber(),
+            'referral_code' => \App\Helpers\AccountNumberHelper::generateReferralCode(),
+            'is_primary' => false,
+            'status' => 'active',
+        ]);
+    }
+
+    /**
+     * Get all sub accounts with basic info
+     */
+    public function getAllSubAccounts()
+    {
+        return $this->subAccounts()
+            ->select(['id', 'name', 'account_number', 'referral_code', 'status', 'is_primary', 'total_balance'])
+            ->orderBy('is_primary', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

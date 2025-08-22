@@ -16,6 +16,23 @@ class SystemSettingSeeder extends Seeder
             // MLM System Settings
             // System Settings
             [
+                'key' => 'site_url',
+                'value' => 'http://smart.test',   //change this to your website url
+                'type' => 'string',
+                'group' => 'system',
+                'display_name' => 'Site URL',
+                'description' => 'The main URL of the website',
+                'is_editable' => true,
+                'is_public' => true,
+                'options' => null,
+                'validation_rules' => 'required|url',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+    
+
+
+            [
                 'key' => 'maintenance_mode',
                 'value' => 'false',
                 'type' => 'boolean',

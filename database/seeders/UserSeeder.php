@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\AccountNumberHelper;
 
 class UserSeeder extends Seeder
 {
@@ -35,7 +36,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Mike Johnson',
                 'phone' => '+8801912345678',
-                'email' => 'mike.johnson@scc.com',
+                'email' => null, // No email - phone only
                 'password' => Hash::make('12345678'),
                 'address' => 'Sylhet, Bangladesh',
                 'created_at' => now(),
@@ -53,7 +54,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'David Brown',
                 'phone' => '+8801512345678',
-                'email' => 'david.brown@scc.com',
+                'email' => null, // No email - phone only
                 'password' => Hash::make('12345678'),
                 'address' => 'Khulna, Bangladesh',
                 'created_at' => now(),

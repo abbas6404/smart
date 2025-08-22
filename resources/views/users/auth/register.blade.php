@@ -75,19 +75,21 @@
                     </div>
                     
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                        <input id="email" name="email" type="email" autocomplete="email" required 
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address (Optional)</label>
+                        <input id="email" name="email" type="email" autocomplete="email" 
                                class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm" 
-                               placeholder="Enter your email address"
+                               placeholder="Enter your email address (optional)"
                                value="{{ old('email') }}">
+                        <p class="mt-1 text-sm text-gray-500">Email is optional but recommended for account recovery</p>
                     </div>
                     
                     <div>
-                        <label for="referral_code" class="block text-sm font-medium text-gray-700">Referral Code (Optional)</label>
+                        <label for="referral_code" class="block text-sm font-medium text-gray-700">Referral Code or Account Number (Optional)</label>
                         <input id="referral_code" name="referral_code" type="text" 
                                class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm" 
-                               placeholder="Enter referral code if you have one"
+                               placeholder="Enter referral code or account number"
                                value="{{ old('referral_code') }}">
+                        <p class="mt-1 text-sm text-gray-500">You can enter either a referral code (8 characters) or account number (XXX-XXXX-XXXX format)</p>
                     </div>
                     
                     <div>

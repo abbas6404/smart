@@ -35,7 +35,7 @@
                 </div>
                 <div class="ml-4">
                     <p class="text-sm font-medium text-gray-600">Total Collection</p>
-                    <p class="text-lg font-semibold text-gray-900">৳{{ number_format($autoBoard->total_collotion_amount ?? 0, 2) }}</p>
+                    <p class="text-lg font-semibold text-gray-900">৳{{ number_format($autoBoard->total_collection_amount ?? 0, 2) }}</p>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
                     <div class="space-y-3">
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-600">Today's Collection:</span>
-                            <span class="text-sm font-medium text-gray-900">৳{{ number_format($autoBoard->today_collotion_amount ?? 0, 2) }}</span>
+                            <span class="text-sm font-medium text-gray-900">৳{{ number_format($autoBoard->today_collection_amount ?? 0, 2) }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-600">Today's Contributors:</span>

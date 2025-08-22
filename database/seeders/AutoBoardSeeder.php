@@ -22,16 +22,16 @@ class AutoBoardSeeder extends Seeder
             $contributors = rand(10, 50); // Random contributors between 10-50
             
             $autoBoards[] = [
-                'total_collotion_amount' => $collectionAmount,
+                'total_collection_amount' => $collectionAmount,
                 'total_contributors' => $contributors,
                 'total_distributed' => 0,
-                'today_collotion_amount' => $collectionAmount,
+                'today_collection_amount' => $collectionAmount,
                 'today_contributors' => $contributors,
                 'today_distributed' => 0,
                 'today_per_account_distributed' => 0,
                 'distribution_date' => $date->format('Y-m-d'),
                 'distributed_date' => null,
-                'status' => 'collotion', // Ready for distribution
+                'status' => 'collection', // Ready for distribution
                 'distribution_log' => json_encode([
                     'collection_date' => $date->format('Y-m-d'),
                     'contributors' => $contributors,
@@ -48,16 +48,16 @@ class AutoBoardSeeder extends Seeder
         $todayContributors = rand(5, 25);
         
         $autoBoards[] = [
-            'total_collotion_amount' => $todayCollection,
+            'total_collection_amount' => $todayCollection,
             'total_contributors' => $todayContributors,
             'total_distributed' => 0,
-            'today_collotion_amount' => $todayCollection,
+            'today_collection_amount' => $todayCollection,
             'today_contributors' => $todayContributors,
             'today_distributed' => 0,
             'today_per_account_distributed' => 0,
             'distribution_date' => now()->format('Y-m-d'),
             'distributed_date' => null,
-            'status' => 'collotion', // Currently collecting
+            'status' => 'collection', // Currently collecting
             'distribution_log' => json_encode([
                 'collection_date' => now()->format('Y-m-d'),
                 'contributors' => $todayContributors,
@@ -73,16 +73,16 @@ class AutoBoardSeeder extends Seeder
             $date = now()->addDays($i);
             
             $autoBoards[] = [
-                'total_collotion_amount' => 0,
+                'total_collection_amount' => 0,
                 'total_contributors' => 0,
                 'total_distributed' => 0,
-                'today_collotion_amount' => 0,
+                'today_collection_amount' => 0,
                 'today_contributors' => 0,
                 'today_distributed' => 0,
                 'today_per_account_distributed' => 0,
                 'distribution_date' => $date->format('Y-m-d'),
                 'distributed_date' => null,
-                'status' => 'collotion', // Future boards ready to collect
+                'status' => 'collection', // Future boards ready to collect
                 'distribution_log' => null,
                 'created_at' => now(),
                 'updated_at' => now(),

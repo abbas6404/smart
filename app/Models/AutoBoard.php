@@ -15,10 +15,10 @@ class AutoBoard extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'total_collotion_amount',
+        'total_collection_amount',
         'total_contributors',
         'total_distributed',
-        'today_collotion_amount',
+        'today_collection_amount',
         'today_contributors',
         'today_distributed',
         'today_per_account_distributed',
@@ -36,8 +36,8 @@ class AutoBoard extends Model
     protected $casts = [
         'distribution_date' => 'date',
         'distributed_date' => 'date',
-        'total_collotion_amount' => 'decimal:2',
-        'today_collotion_amount' => 'decimal:2',
+        'total_collection_amount' => 'decimal:2',
+        'today_collection_amount' => 'decimal:2',
         'today_per_account_distributed' => 'decimal:2',
         'distribution_log' => 'array',
     ];
@@ -63,7 +63,7 @@ class AutoBoard extends Model
      */
     public function isCollecting(): bool
     {
-        return $this->status === 'collotion';
+        return $this->status === 'collection';
     }
 
     /**
@@ -79,6 +79,6 @@ class AutoBoard extends Model
      */
     public function isReadyForDistribution(): bool
     {
-        return $this->isCollecting() && $this->today_collotion_amount > 0;
+        return $this->isCollecting() && $this->today_collection_amount > 0;
     }
 }

@@ -37,7 +37,7 @@ class AdminController extends Controller
 
             // Auto Board Stats
             $autoBoardStats = [
-                'status' => 'collotion',
+                'status' => 'collection',
                 'collection_amount' => 0,
                 'contributors' => 0,
                 'eligible_accounts' => 0,
@@ -74,7 +74,7 @@ class AdminController extends Controller
             $totalPackages = 0;
             $withdrawalAmount = 0;
             $autoBoardStats = [
-                'status' => 'collotion',
+                'status' => 'collection',
                 'collection_amount' => 0,
                 'contributors' => 0,
                 'eligible_accounts' => 0,

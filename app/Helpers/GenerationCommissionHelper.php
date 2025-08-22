@@ -212,11 +212,17 @@ class GenerationCommissionHelper
             $sponsor->increment('total_balance', $sponsorCommission);
             $sponsor->update(['last_balance_update_at' => now()]);
             
+            // Get current balance before transaction
+            $balanceBefore = $sponsor->total_balance;
+            $balanceAfter = $balanceBefore + $sponsorCommission;
+            
             // Create transaction record for sponsor commission
             DB::table('transactions')->insert([
                 'sub_account_id' => $sponsor->id,
                 'type' => 'sponsor_commission',
                 'amount' => $sponsorCommission,
+                'balance_before' => $balanceBefore,
+                'balance_after' => $balanceAfter,
                 'description' => "Sponsor commission from package purchase #{$packageId}",
                 'status' => 'approved',
                 'system_ip' => request()->ip(),
@@ -265,11 +271,17 @@ class GenerationCommissionHelper
             $sponsor->increment('total_balance', $commissionAmount);
             $sponsor->update(['last_balance_update_at' => now()]);
             
+            // Get current balance before transaction
+            $balanceBefore = $sponsor->total_balance;
+            $balanceAfter = $balanceBefore + $commissionAmount;
+            
             // Create transaction record for generation commission
             DB::table('transactions')->insert([
                 'sub_account_id' => $sponsor->id,
                 'type' => 'generation_commission',
                 'amount' => $commissionAmount,
+                'balance_before' => $balanceBefore,
+                'balance_after' => $balanceAfter,
                 'description' => "Generation {$level} commission from package purchase #{$packageId}",
                 'status' => 'approved',
                 'system_ip' => request()->ip(),

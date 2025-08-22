@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\Users\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,19 @@ Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     
     // User Dashboard
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard.index');
+    
+    // Account Management
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::get('/', [AccountController::class, 'index'])->name('index');
+        Route::get('/switch', [AccountController::class, 'switch'])->name('switch');
+        Route::post('/switch', [AccountController::class, 'switchAccount'])->name('switch-account');
+        Route::get('/create', [AccountController::class, 'create'])->name('create');
+        Route::post('/', [AccountController::class, 'store'])->name('store');
+        Route::get('/referrals', [AccountController::class, 'referrals'])->name('referrals');
+        Route::get('/{subAccount}', [AccountController::class, 'show'])->name('show');
+        Route::post('/{subAccount}/primary', [AccountController::class, 'setPrimary'])->name('set-primary');
+        Route::delete('/{subAccount}', [AccountController::class, 'destroy'])->name('destroy');
+    });
     
     // User Profile
     Route::prefix('profile')->name('profile.')->group(function () {

@@ -26,8 +26,8 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'phone' => '+880' . fake()->numberBetween(100000000, 999999999),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'email' => fake()->optional(0.8)->unique()->safeEmail(), // 80% chance of having email
+            'email_verified_at' => null, // Will be set if email exists
             'password' => static::$password ??= Hash::make('password'),
             'address' => fake()->address(),
             'remember_token' => Str::random(10),

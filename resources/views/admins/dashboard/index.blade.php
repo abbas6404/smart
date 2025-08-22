@@ -99,8 +99,8 @@
             <h2 class="text-lg font-semibold text-gray-900">Auto Board System Status</h2>
             <div class="flex space-x-2">
                 <span class="px-3 py-1 text-sm font-medium rounded-full 
-                    {{ $autoBoardStats['status'] === 'collotion' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
-                    {{ ucfirst($autoBoardStats['status'] ?? 'collotion') }}
+                                    {{ $autoBoardStats['status'] === 'collection' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
+                {{ ucfirst($autoBoardStats['status'] ?? 'collection') }}
                 </span>
                 <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
                     Manual Process

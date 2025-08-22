@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\AutoBoardController;
+use App\Http\Controllers\Api\PurchaseReferralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ use App\Http\Controllers\Api\AutoBoardController;
 */
 
 // Public API Routes
+// Note: Login supports both phone number and email using the 'login' field
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);

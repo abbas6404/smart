@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\AccountNumberHelper;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -18,20 +19,29 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20|unique:users',
+            'email' => 'nullable|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'referral_code' => 'nullable|string|exists:users,referral_code',
+            'referral_code' => 'nullable|string',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'email' => $validated['email'] ?: null,
             'password' => Hash::make($validated['password']),
-            'referral_code' => $this->generateReferralCode(),
+            'referral_code' => AccountNumberHelper::generateReferralCode(),
         ]);
 
         if (isset($validated['referral_code'])) {
+            // Try to find sponsor by referral code first
             $sponsor = User::where('referral_code', $validated['referral_code'])->first();
+            
+            // If not found by referral code, try by account number
+            if (!$sponsor) {
+                $sponsor = User::where('account_number', $validated['referral_code'])->first();
+            }
+            
             if ($sponsor) {
                 $user->update(['sponsor_id' => $sponsor->id]);
             }
@@ -52,17 +62,38 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|string|email',
+            'login' => 'required|string', // Can be email or phone
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($validated)) {
+        $login = $validated['login'];
+        $password = $validated['password'];
+
+        // Determine if login is email or phone
+        $isEmail = filter_var($login, FILTER_VALIDATE_EMAIL);
+        
+        if ($isEmail) {
+            // Check if user exists with this email
+            $user = User::where('email', $login)->first();
+            if (!$user) {
+                throw ValidationException::withMessages([
+                    'login' => ['No account found with this email address.'],
+                ]);
+            }
+            // Login with email
+            $credentials = ['email' => $login, 'password' => $password];
+        } else {
+            // Login with phone
+            $credentials = ['phone' => $login, 'password' => $password];
+        }
+
+        if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'login' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $user = User::where('email', $validated['email'])->first();
+        $user = Auth::user();
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
@@ -90,7 +121,7 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|string|email|exists:users',
+            'email' => 'required|string|email|exists:users,email',
         ]);
 
         // Send password reset email logic here
@@ -108,7 +139,7 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'token' => 'required|string',
-            'email' => 'required|string|email|exists:users',
+            'email' => 'required|string|email|exists:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -120,15 +151,5 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Generate unique referral code
-     */
-    private function generateReferralCode()
-    {
-        do {
-            $code = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
-        } while (User::where('referral_code', $code)->exists());
 
-        return $code;
-    }
 }

@@ -85,8 +85,8 @@ class AutoBoardContributionSeeder extends Seeder
         DB::table('auto_boards')
             ->where('id', $todaysBoard->id)
             ->update([
-                'total_collotion_amount' => $totalAmount,
-                'today_collotion_amount' => $totalAmount,
+                'total_collection_amount' => $totalAmount,
+                'today_collection_amount' => $totalAmount,
                 'total_contributors' => count($contributions),
                 'today_contributors' => count($contributions),
                 'updated_at' => now(),

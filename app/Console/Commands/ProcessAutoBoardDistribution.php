@@ -25,13 +25,13 @@ class ProcessAutoBoardDistribution extends Command
                 return;
             }
             
-            if ($previousDayBoard->status !== 'collotion') {
+            if ($previousDayBoard->status !== 'collection') {
                 $this->warn("⚠️ Previous day board (ID: {$previousDayBoard->id}) is not in collection status");
                 Log::info("AutoBoard: Board ID {$previousDayBoard->id} not ready for processing");
                 return;
             }
             
-            if ($previousDayBoard->today_collotion_amount <= 0) {
+            if ($previousDayBoard->today_collection_amount <= 0) {
                 $this->warn("⚠️ Previous day board (ID: {$previousDayBoard->id}) has no collection amount");
                 Log::info("AutoBoard: Board ID {$previousDayBoard->id} has no collection amount");
                 return;
@@ -39,7 +39,7 @@ class ProcessAutoBoardDistribution extends Command
             
             $this->info("📊 Processing board:");
             $this->line("   Date: {$previousDayBoard->distribution_date}");
-            $this->line("   Collection: {$previousDayBoard->today_collotion_amount}");
+            $this->line("   Collection: {$previousDayBoard->today_collection_amount}");
             $this->line("   Contributors: {$previousDayBoard->today_contributors}");
             
             // Process distribution

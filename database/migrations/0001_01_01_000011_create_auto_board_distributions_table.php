@@ -16,13 +16,13 @@ return new class extends Migration
             $table->foreignId('auto_board_id')->constrained('auto_boards')->onDelete('cascade');
             $table->foreignId('sub_account_id')->constrained('sub_accounts')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->integer('direct_referral_count')->default(0); // from sub account direct referral count  when the auto board is distributed
+            $table->integer('purchase_referral_count')->default(0); // from sub account purchase referral count when the auto board is distributed
             $table->text('notes')->nullable();
             $table->timestamps();
           
 
             // index with shorter names
-            $table->index(['auto_board_id', 'sub_account_id', 'direct_referral_count'], 'abd_main_index');
+            $table->index(['auto_board_id', 'sub_account_id', 'purchase_referral_count'], 'abd_main_index');
             $table->index('sub_account_id');
             $table->index('created_at');
             $table->index('updated_at');

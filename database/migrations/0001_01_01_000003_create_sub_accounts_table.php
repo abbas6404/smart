@@ -25,6 +25,7 @@ return new class extends Migration
             $table->dateTime('active_package_purcased_at')->nullable();
             $table->foreignId('referral_by_id')->nullable()->constrained('sub_accounts')->onDelete('set null');
             $table->integer('direct_referral_count')->default(0);
+            $table->integer('purchase_referral_count')->default(0); // count of the purchase referral of the sub account
             $table->integer('generation_count')->default(0); // generation count is the count of the generation of the sub account
 
 
@@ -42,18 +43,10 @@ return new class extends Migration
 
 
 
-
-
-
-          
-
-
-   
-
-
             // User Information
             $table->string('profile_picture')->nullable();
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->boolean('is_primary')->default(false); // is primary is the primary account of the user
             $table->dateTime('last_balance_update_at')->nullable();
             $table->timestamps();
 
