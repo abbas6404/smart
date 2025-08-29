@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('level_commissions', function (Blueprint $table) {
             $table->id();
-            $table->integer('level');
-            $table->decimal('commission_percentage', 5, 2);
+            $table->integer('level')->unique();
+            $table->decimal('commission_percentage', 5, 2); 
             $table->string('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
-            $table->unique('level');
+            $table->softDeletes();
+
+            $table->index('level');
         });
     }
 

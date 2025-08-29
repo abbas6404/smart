@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('withdrawal_limit', 10, 2)->default(0); 
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

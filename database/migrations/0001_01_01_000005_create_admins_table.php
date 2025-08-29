@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('last_login_user_agent')->nullable(); // last login user agent is the user agent of the admin last login
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
             
             // index
             $table->index('status'); // index for the status

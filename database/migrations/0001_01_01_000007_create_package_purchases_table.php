@@ -28,6 +28,7 @@ return new class extends Migration
             $table->index('updated_at'); // index for the updated at
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

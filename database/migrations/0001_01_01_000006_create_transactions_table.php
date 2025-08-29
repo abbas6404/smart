@@ -45,6 +45,7 @@ return new class extends Migration
 
 
             $table->timestamps();
+            $table->softDeletes();
             
             // Indexes for performance
             $table->index(['sub_account_id', 'type']);

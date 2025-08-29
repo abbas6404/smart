@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('purchase_referral_count')->default(0); // from sub account purchase referral count when the auto board is distributed
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
           
 
             // index with shorter names

@@ -37,6 +37,7 @@ return new class extends Migration
             $table->index('distributed_date'); // index for the distributed date
             $table->index('status'); // index for the status
             $table->index('created_at'); // index for the created at
+            $table->softDeletes();
         
             
            

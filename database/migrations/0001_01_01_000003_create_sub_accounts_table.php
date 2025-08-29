@@ -49,7 +49,7 @@ return new class extends Migration
             $table->boolean('is_primary')->default(false); // is primary is the primary account of the user
             $table->dateTime('last_balance_update_at')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             // indexes for performance
             // will be added later
             
