@@ -97,4 +97,36 @@ class Admin extends Authenticatable
                     ->orWhere('email', $identifier)
                     ->first();
     }
+
+    /**
+     * Get the tickets reviewed by this admin
+     */
+    public function reviewedTickets()
+    {
+        return $this->hasMany(Ticket::class, 'reviewed_by');
+    }
+
+    /**
+     * Get the count of tickets reviewed by this admin
+     */
+    public function getReviewedTicketsCount(): int
+    {
+        return $this->reviewedTickets()->count();
+    }
+
+    /**
+     * Get the count of open tickets reviewed by this admin
+     */
+    public function getReviewedOpenTicketsCount(): int
+    {
+        return $this->reviewedTickets()->where('status', 'open')->count();
+    }
+
+    /**
+     * Get the count of closed tickets reviewed by this admin
+     */
+    public function getReviewedClosedTicketsCount(): int
+    {
+        return $this->reviewedTickets()->where('status', 'closed')->count();
+    }
 }

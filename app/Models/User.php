@@ -308,4 +308,84 @@ class User extends Authenticatable
             ->orderBy('created_at', 'desc')
             ->get();
     }
+
+    /**
+     * Get the user's KYC verification
+     */
+    public function kycVerification()
+    {
+        return $this->hasOne(KYCVerification::class);
+    }
+
+    /**
+     * Check if user has completed KYC verification
+     */
+    public function hasVerifiedKYC(): bool
+    {
+        return $this->kycVerification && $this->kycVerification->isVerified();
+    }
+
+    /**
+     * Check if user's KYC is pending
+     */
+    public function hasPendingKYC(): bool
+    {
+        return $this->kycVerification && $this->kycVerification->isPending();
+    }
+
+    /**
+     * Check if user's KYC failed
+     */
+    public function hasFailedKYC(): bool
+    {
+        return $this->kycVerification && $this->kycVerification->isFailed();
+    }
+
+    /**
+     * Get the user's tickets
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Get the user's open tickets
+     */
+    public function openTickets()
+    {
+        return $this->tickets()->where('status', 'open');
+    }
+
+    /**
+     * Get the user's closed tickets
+     */
+    public function closedTickets()
+    {
+        return $this->tickets()->where('status', 'closed');
+    }
+
+    /**
+     * Get the user's ticket count
+     */
+    public function getTicketCount(): int
+    {
+        return $this->tickets()->count();
+    }
+
+    /**
+     * Get the user's open ticket count
+     */
+    public function getOpenTicketCount(): int
+    {
+        return $this->openTickets()->count();
+    }
+
+    /**
+     * Get the user's closed ticket count
+     */
+    public function getClosedTicketCount(): int
+    {
+        return $this->closedTickets()->count();
+    }
 }

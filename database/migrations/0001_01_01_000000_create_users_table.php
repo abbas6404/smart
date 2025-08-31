@@ -16,15 +16,26 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('email')->unique()->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('address')->nullable();
+
+            $table->timestamp('email_verified_at')->nullable();
             $table->dateTime('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
             $table->string('last_login_user_agent')->nullable();
+            $table->enum('status', [ 'kyc_pending','kyc_verified', 'kyc_failed','suspended'])->default('kyc_pending');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
+            // index
+            $table->index('name');
+            $table->index('phone');
+            $table->index('email');
+            $table->index('status');
+            $table->index('created_at');
+            $table->index('updated_at');
+            $table->index('deleted_at');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

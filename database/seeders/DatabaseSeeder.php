@@ -19,13 +19,17 @@ class DatabaseSeeder extends Seeder
             PackageSeeder::class,                // 2. Create investment packages
             LevelCommissionSeeder::class,        // 3. Create level commission structure
             UserSeeder::class,                   // 4. Create sample users
-            SubAccountSeeder::class,             // 5. Create sub-accounts (depends on users & packages)
-            AutoBoardSeeder::class,              // 6. Create auto boards for daily income
-            TransactionSeeder::class,            // 7. Create sample transactions
-            PackagePurchaseSeeder::class,        // 8. Create package purchases (depends on transactions)
-            AutoBoardContributionSeeder::class,  // 9. Create auto board contributions
-            AutoBoardDistributionSeeder::class,  // 10. Create auto board distributions
-            SystemSettingSeeder::class,          // 11. Create system settings
+            AgentSeeder::class,                   // 5. Create agents
+            SubAccountSeeder::class,             // 6. Create sub-accounts (depends on users & packages)
+            AutoBoardSeeder::class,              // 7. Create auto boards for daily income
+            TransactionSeeder::class,            // 8. Create sample transactions
+            PackagePurchaseSeeder::class,        // 9. Create package purchases (depends on transactions)
+            AutoBoardContributionSeeder::class,  // 10. Create auto board contributions
+            AutoBoardDistributionSeeder::class,  // 11. Create auto board distributions
+            SystemSettingSeeder::class,          // 12. Create system settings
+            TicketCategorySeeder::class,         // 13. Create ticket categories
+            TicketSeeder::class,                 // 14. Create sample tickets
+            KYCVerificationSeeder::class,        // 15. Create KYC verification records
         ]);
 
     
