@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'John Doe',
                 'phone' => '+8801712345678',
-                'email' => 'john.doe@scc.com',
+                'email' => 'user@gmail.com',
                 'password' => Hash::make('12345678'),
                 'address' => 'Dhaka, Bangladesh',
                 'created_at' => now(),
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Jane Smith',
                 'phone' => '+8801812345678',
-                'email' => 'jane.smith@scc.com',
+                'email' => 'user2@gmail.com',
                 'password' => Hash::make('12345678'),
                 'address' => 'Chittagong, Bangladesh',
                 'created_at' => now(),
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Mike Johnson',
                 'phone' => '+8801912345678',
-                'email' => null, // No email - phone only
+                'email' => 'user4@gmail.com',
                 'password' => Hash::make('12345678'),
                 'address' => 'Sylhet, Bangladesh',
                 'created_at' => now(),
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Sarah Wilson',
                 'phone' => '+8801612345678',
-                'email' => 'sarah.wilson@scc.com',
+                'email' => 'user5@gmail.com',
                 'password' => Hash::make('12345678'),
                 'address' => 'Rajshahi, Bangladesh',
                 'created_at' => now(),
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'David Brown',
                 'phone' => '+8801512345678',
-                'email' => null, // No email - phone only
+                'email' => 'user6@gmail.com',
                 'password' => Hash::make('12345678'),
                 'address' => 'Khulna, Bangladesh',
                 'created_at' => now(),

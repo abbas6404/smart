@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Admins;
+namespace App\Http\Controllers\Agents;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Admin;
+use App\Models\Agent;
 use Illuminate\Validation\ValidationException;
 
-class AdminAuthController extends Controller
+class AgentAuthController extends Controller
 {
     /**
-     * Show admin login form
+     * Show agent login form
      */
     public function showLogin()
     {
-        return view('admins.auth.login');
+        return view('agents.auth.login');
     }
 
     /**
-     * Handle admin login
+     * Handle agent login
      */
     public function login(Request $request)
     {
         $request->validate([
-            'login' => 'required|string', // Can be username or email
+            'login' => 'required|string', // Can be phone or email
             'password' => 'required|string',
             'remember' => 'boolean',
         ]);
@@ -34,52 +34,60 @@ class AdminAuthController extends Controller
         $password = $request->input('password');
         $remember = $request->boolean('remember');
 
-        // First, try to find the admin by username or email
-        $admin = Admin::where('username', $login)
+        // First, try to find the agent by phone or email
+        $agent = Agent::where('phone', $login)
                      ->orWhere('email', $login)
                      ->first();
         
-        if (!$admin) {
+        if (!$agent) {
             throw ValidationException::withMessages([
                 'login' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        // Check if admin is active
-        if (!$admin->isActive()) {
+        // Check if agent is active
+        if (!$agent->isActive()) {
+            $statusMessage = match($agent->status) {
+                'inactive' => 'Your account is currently inactive. Please contact support.',
+                'suspended' => 'Your account has been suspended. Please contact support.',
+                default => 'Your account is not active. Please contact support.'
+            };
+            
             throw ValidationException::withMessages([
-                'login' => ['Your account has been suspended.'],
+                'login' => [$statusMessage],
             ]);
         }
 
-        // Check password manually since we found the admin by username/email
-        if (!Hash::check($password, $admin->password)) {
+        // Check password manually since we found the agent by phone/email
+        if (!Hash::check($password, $agent->password)) {
             throw ValidationException::withMessages([
                 'login' => ['The provided credentials are incorrect.'],
             ]);
         }
         
-        // Manually log in the admin
-        Auth::guard('admin')->login($admin, $remember);
+        // Manually log in the agent
+        Auth::guard('agent')->login($agent, $remember);
         
         // Update last login information
-        $admin->updateLastLogin();
+        $agent->updateLastLogin();
         
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.root'));
+        return redirect()->intended(route('agent.root'));
     }
 
     /**
-     * Handle admin logout
+     * Handle agent logout
      */
     public function logout(Request $request)
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('agent')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('agent.login');
     }
+
+
 }

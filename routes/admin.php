@@ -3,11 +3,21 @@
 use App\Http\Controllers\Admins\AdminController;
 use Illuminate\Support\Facades\Route;
 
-// Admin Routes (No Authentication Required)
-Route::prefix('admin')->name('admin.')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Admin Protected Routes
+|--------------------------------------------------------------------------
+|
+| These routes are only accessible to authenticated admin users.
+| All routes in this file require admin authentication.
+|
+*/
+
+// Admin Protected Routes (Authentication Required)
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
     
-    // Admin Dashboard
-    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard.index');
+    // Admin Dashboard (handled by smart redirect in web.php)
+    // Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard.index');
     
     // Users Management
     Route::prefix('users')->name('users.')->group(function () {

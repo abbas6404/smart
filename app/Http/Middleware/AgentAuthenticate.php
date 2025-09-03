@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminAuthenticate extends Middleware
+class AgentAuthenticate extends Middleware
 {
     /**
      * Handle an unauthenticated user.
@@ -24,8 +24,8 @@ class AdminAuthenticate extends Middleware
             abort(401, 'Unauthenticated.');
         }
 
-        // Redirect to admin login page
-        redirect()->route('admin.login')->send();
+        // Redirect to agent login page
+        redirect()->route('agent.login')->send();
         exit;
     }
 
@@ -34,6 +34,6 @@ class AdminAuthenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('admin.login');
+        return $request->expectsJson() ? null : route('agent.login');
     }
 }

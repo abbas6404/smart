@@ -31,7 +31,7 @@ return new class extends Migration
 
           // financial information
           $table->decimal('total_balance', 10, 2)->default(0); // total deposit + total sponsor commission + total generation commission + total auto income - ( total withdrawal + total package purchase )
-          $table->decimal('withdrawal_limit', 10, 2)->default(0); // total withdrawal only
+          $table->decimal('remaining_withdrawal_limit', 10, 2)->default(0); // total withdrawal only
           // debits
           $table->decimal('total_withdrawal', 10, 2)->default(0);
           $table->decimal('total_package_purchase', 10, 2)->default(0);

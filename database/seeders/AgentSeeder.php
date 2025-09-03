@@ -18,7 +18,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Ahmed Rahman',
                 'phone' => '+8801712345679',
-                'email' => 'ahmed.rahman@example.com',
+                'email' => 'agent@gmail.com',
                 'email_verified_at' => now()->subDays(30),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #45, Road #8, Banani, Dhaka-1213',
@@ -38,7 +38,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Fatima Begum',
                 'phone' => '+8801812345679',
-                'email' => 'fatima.begum@example.com',
+                'email' => 'agent2@gmail.com',
                 'email_verified_at' => now()->subDays(25),
                 'password' => Hash::make('12345678'),
                 'address' => 'Apartment #12, Building #5, Agrabad, Chittagong-4100',
@@ -58,7 +58,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Karim Hossain',
                 'phone' => '+8801912345679',
-                'email' => 'karim.hossain@example.com',
+                'email' => 'agent3@gmail.com',
                 'email_verified_at' => now()->subDays(20),
                 'password' => Hash::make('12345678'),
                 'address' => 'Village: Shibganj, Upazila: Sylhet Sadar, District: Sylhet',
@@ -78,7 +78,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Nusrat Jahan',
                 'phone' => '+8801612345679',
-                'email' => 'nusrat.jahan@example.com',
+                'email' => 'agent4@gmail.com',
                 'email_verified_at' => now()->subDays(15),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #78, Road #3, Rajshahi University Area, Rajshahi-6205',
@@ -98,7 +98,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Imran Ali',
                 'phone' => '+8801512345679',
-                'email' => 'imran.ali@example.com',
+                'email' => 'agent5@gmail.com',
                 'email_verified_at' => now()->subDays(10),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #56, Road #8, Khalishpur, Khulna-9000',
@@ -118,7 +118,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Sabina Yasmin',
                 'phone' => '+8801412345679',
-                'email' => 'sabina.yasmin@example.com',
+                'email' => 'agent6@gmail.com',
                 'email_verified_at' => now()->subDays(5),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #23, Road #12, Mirpur, Dhaka-1216',
@@ -138,7 +138,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Rashid Khan',
                 'phone' => '+8801312345679',
-                'email' => 'rashid.khan@example.com',
+                'email' => 'agent7@gmail.com',
                 'email_verified_at' => now()->subDays(3),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #67, Road #9, Uttara, Dhaka-1230',
@@ -158,7 +158,7 @@ class AgentSeeder extends Seeder
             [
                 'name' => 'Ayesha Sultana',
                 'phone' => '+8801212345679',
-                'email' => 'ayesha.sultana@example.com',
+                'email' => 'agent8@gmail.com',
                 'email_verified_at' => now()->subDays(1),
                 'password' => Hash::make('12345678'),
                 'address' => 'House #89, Road #15, Gulshan, Dhaka-1212',

@@ -85,7 +85,7 @@ class Admin extends Authenticatable
      */
     public function getAuthIdentifierName(): string
     {
-        return 'username';
+        return 'id';
     }
 
     /**

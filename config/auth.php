@@ -43,7 +43,10 @@ return [
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
-            'redirect_to' => 'user.login',
+        ],
+        'agent' => [
+            'driver' => 'session',
+            'provider' => 'agents',
         ],
     ],
 
@@ -72,6 +75,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+        'agents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Agent::class,
         ],
 
         // 'users' => [

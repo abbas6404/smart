@@ -14,10 +14,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.admin' => \App\Http\Middleware\AdminAuthenticate::class,
+            'auth.agent' => \App\Http\Middleware\AgentAuthenticate::class,
         ]);
         
         $middleware->group('admin', [
             'auth.admin:admin',
+        ]);
+        
+        $middleware->group('agent', [
+            'auth.agent:agent',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
